@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
+
+	"ovsiienko.xyz/advent-of-code/internal/util"
 )
 
 const MAX_ITEMS = 100
 
 func main() {
-	data, err := os.ReadFile("input.txt")
+	input, err := util.ReadLines("input.txt")
 	if err != nil {
-		fmt.Printf("Failed to read the file: %s", err)
-		panic(1)
+		fmt.Printf("Failed to read the file: %s\n", err)
+		os.Exit(1)
 	}
-	input := strings.Split(string(data), "\n")
 	currentValue := 50
 	code := 0
 	for i, v := range input {
