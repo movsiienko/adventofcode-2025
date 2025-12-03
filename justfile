@@ -62,5 +62,5 @@ new DAY:
     @echo "Creating day {{DAY}}..."
     @mkdir -p cmd/day{{DAY}}
     @touch cmd/day{{DAY}}/input.txt
-    @echo 'package main\n\nimport (\n\t"fmt"\n\t"ovsiienko.xyz/advent-of-code/internal/util"\n)\n\nfunc main() {\n\tlines, err := util.ReadLines("input.txt")\n\tif err != nil {\n\t\tfmt.Printf("Error reading input: %v\\n", err)\n\t\treturn\n\t}\n\n\t// Part 1\n\tfmt.Println("Part 1:", part1(lines))\n\n\t// Part 2\n\tfmt.Println("Part 2:", part2(lines))\n}\n\nfunc part1(lines []string) int {\n\t// TODO: Implement part 1\n\treturn 0\n}\n\nfunc part2(lines []string) int {\n\t// TODO: Implement part 2\n\treturn 0\n}\n' > cmd/day{{DAY}}/main.go
+    @printf 'package main\n\nimport (\n\t"fmt"\n\t"ovsiienko.xyz/advent-of-code/internal/util"\n)\n\nfunc main() {\n\tlines, err := util.ReadLines("input.txt")\n\tif err != nil {\n\t\tfmt.Printf("Error reading input: %%v\\n", err)\n\t\treturn\n\t}\n\n\t// Part 1\n\tfmt.Println("Part 1:", part1(lines))\n\n\t// Part 2\n\tfmt.Println("Part 2:", part2(lines))\n}\n\nfunc part1(lines []string) int {\n\t// TODO: Implement part 1\n\treturn 0\n}\n\nfunc part2(lines []string) int {\n\t// TODO: Implement part 2\n\treturn 0\n}\n' > cmd/day{{DAY}}/main.go
     @echo "Day {{DAY}} created! Edit cmd/day{{DAY}}/main.go and add your input to cmd/day{{DAY}}/input.txt"
