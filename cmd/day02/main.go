@@ -5,7 +5,6 @@ import (
 	"math"
 	"strconv"
 	"strings"
-
 	"ovsiienko.xyz/advent-of-code/internal/util"
 )
 
@@ -19,13 +18,23 @@ func main() {
 	products := strings.Split(input, ",")
 	total := 0
 	for _, v := range products {
-		v = strings.ReplaceAll(v, "0", "")
-		for id := range strings.SplitSeq(v, "-") {
-			idNumber, err := strconv.Atoi(id)
-			if err != nil {
-				fmt.Printf("Failed to cast to number: %s.", id)
-				panic(err)
-			}
+		rangeIds := strings.Split(v, "-")
+		if len(rangeIds) != 2 {
+			fmt.Printf("Invalid range: %s", v)
+			continue
+		}
+		lower, err := strconv.Atoi(rangeIds[0])
+		if err != nil {
+			fmt.Printf("Failed to convert lower %s", rangeIds[0])
+			panic(err)
+		}
+		upper, err := strconv.Atoi(rangeIds[1])
+		if err != nil {
+			fmt.Printf("Faile to convert upper: %s", rangeIds[1])
+			panic(err)
+		}
+		for idNumber := lower; idNumber <= upper; idNumber++ {
+			id := strconv.Itoa(idNumber)
 			idLength := int(math.Pow10(len(id) / 2))
 			firstHalf := idNumber / idLength
 			secondHalf := idNumber % idLength
