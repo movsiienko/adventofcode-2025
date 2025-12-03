@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"math"
+	"ovsiienko.xyz/advent-of-code/internal/util"
+	"slices"
 	"strconv"
 	"strings"
-	"ovsiienko.xyz/advent-of-code/internal/util"
 )
 
 func main() {
@@ -34,16 +34,36 @@ func main() {
 			panic(err)
 		}
 		for idNumber := lower; idNumber <= upper; idNumber++ {
-			id := strconv.Itoa(idNumber)
-			idLength := int(math.Pow10(len(id) / 2))
-			firstHalf := idNumber / idLength
-			secondHalf := idNumber % idLength
-			if firstHalf == secondHalf {
-				total += idNumber
+			if !isValidId(idNumber) {
+				total += 1
 			}
-			fmt.Printf("Input Id: %s, First half: %d, Sencod half: %d, Total: %d \n", id, firstHalf, secondHalf, total)
 		}
 	}
 	fmt.Println(total)
 }
 
+func isValidId(num int) bool {
+	digits := strconv.Itoa(num)
+	start := rune(digits[0])
+	seq := []rune{start}
+	for _, currentDigit := range digits[1:] {
+		if currentDigit == start {
+			break
+		}
+		seq = append(seq, currentDigit)
+	}
+	fmt.Printf("Seq: %s \n", string(seq))
+	seqLen := len(seq)
+	remaining := len(digits) - seqLen
+	if remaining%seqLen != 0 {
+		return true
+	}
+	for y := 1; y <= remaining/seqLen; y++ {
+		seqCandidate := digits[y*seqLen : (y+1)*seqLen]
+		fmt.Printf("Seq candidate: %v \n", seqCandidate)
+		if !slices.Equal(seq, []rune(seqCandidate)) {
+			return true
+		}
+	}
+	return false
+}
