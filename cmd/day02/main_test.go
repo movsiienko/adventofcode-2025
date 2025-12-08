@@ -7,7 +7,6 @@ import (
 )
 
 func TestIsValidIdRanges(t *testing.T) {
-	count := 0
 	var tests = []struct {
 		startRange int
 		endRange   int
@@ -30,7 +29,6 @@ func TestIsValidIdRanges(t *testing.T) {
 			testName := fmt.Sprintf("%d", i)
 			t.Run(testName, func(t *testing.T) {
 				isValid := isValidId(i)
-				count++
 				expected := !slices.Contains(tt.invalid, i)
 				if isValid != expected {
 					t.Errorf("Got %t, want %t", isValid, expected)

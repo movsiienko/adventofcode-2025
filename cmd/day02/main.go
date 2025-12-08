@@ -35,7 +35,7 @@ func main() {
 		}
 		for idNumber := lower; idNumber <= upper; idNumber++ {
 			if !isValidId(idNumber) {
-				total += 1
+				total += idNumber
 			}
 		}
 	}
