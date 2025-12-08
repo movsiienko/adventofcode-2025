@@ -48,7 +48,6 @@ func isValidId(num int) bool {
 	seq := []rune{start}
 	for _, currentDigit := range digits[1:] {
 		if currentDigit == start {
-			// fmt.Printf("Seq: %s \n", string(seq))
 			seqLen := len(seq)
 			remaining := len(digits) - seqLen
 			if remaining%seqLen != 0 {
@@ -58,7 +57,6 @@ func isValidId(num int) bool {
 			shouldContinue := false
 			for y := 1; y <= remaining/seqLen; y++ {
 				seqCandidate := digits[y*seqLen : (y+1)*seqLen]
-				// fmt.Printf("Seq candidate: %v \n", seqCandidate)
 				if !slices.Equal(seq, []rune(seqCandidate)) {
 					seq = append(seq, currentDigit)
 					shouldContinue = true
