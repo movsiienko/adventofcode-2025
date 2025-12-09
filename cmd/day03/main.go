@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"ovsiienko.xyz/advent-of-code/internal/util"
 	"strconv"
 )
@@ -32,23 +33,30 @@ func main() {
 			}
 			remaning := len(bank) - i
 			if remaning >= 12 && batteryInt > head {
+				fmt.Printf("Switching head: %d. Current stack: %v \n", batteryInt, stack)
 				stack = []int{batteryInt}
+				head = batteryInt
 				continue
 			}
 			latest := stack[len(stack)-1]
-			if remaning+len(stack) >= 12 && batteryInt > latest {
+			// TODO: Simillar to how we check head we need to check other numbers since the begining depending on how much we have left in the bank
+			if remaning+len(stack) > 12 && batteryInt > latest {
+				fmt.Printf("Switching to latest: %d. Current stack: %v \n", batteryInt, stack)
 				stack[len(stack)-1] = batteryInt
+			} else if remaning+len(stack) > 12 {
+
 			} else if len(stack) < 12 {
+				fmt.Printf("Appending %d. Current stack: %v \n", batteryInt, stack)
 				stack = append(stack, batteryInt)
 			}
 		}
+		fmt.Printf("Bank: %s. Stack %v\n", bank, stack)
 		if len(stack) != 12 {
 			panic("Stack len should be 12.")
 		}
 		for i, num := range stack {
-			result += (len(stack) - i) * 10 * num
+			result += int(math.Pow10(len(stack)-i-1)) * num
 		}
-		fmt.Printf("Bank: %s. Stack %v\n", bank, stack)
 	}
 	fmt.Println(result)
 
