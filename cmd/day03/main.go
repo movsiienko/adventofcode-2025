@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"strconv"
-
 	"ovsiienko.xyz/advent-of-code/internal/util"
+	"strconv"
 )
 
 func main() {
@@ -18,23 +17,38 @@ func main() {
 		if bank == "" {
 			continue
 		}
-		mainBattery := 0
-		secondBattery := 0
+		stack := []int{}
+		head := 0
 		for i, battery := range bank {
 			batteryInt, err := runeToInt(battery)
 			if err != nil {
 				fmt.Println("Failed to convert battery")
 				panic(1)
 			}
-			if batteryInt > mainBattery && i != len(bank)-1 {
-				mainBattery = batteryInt
-				secondBattery = 0
-			} else if batteryInt > secondBattery {
-				secondBattery = batteryInt
+			if len(stack) == 0 {
+				stack = append(stack, batteryInt)
+				head = batteryInt
+				continue
+			}
+			remaning := len(bank) - i
+			if remaning >= 12 && batteryInt > head {
+				stack = []int{batteryInt}
+				continue
+			}
+			latest := stack[len(stack)-1]
+			if remaning+len(stack) >= 12 && batteryInt > latest {
+				stack[len(stack)-1] = batteryInt
+			} else if len(stack) < 12 {
+				stack = append(stack, batteryInt)
 			}
 		}
-		fmt.Printf("Bank: %s. Main battery: %d. Second battery: %d. \n", bank, mainBattery, secondBattery)
-		result += mainBattery*10 + secondBattery
+		if len(stack) != 12 {
+			panic("Stack len should be 12.")
+		}
+		for i, num := range stack {
+			result += (len(stack) - i) * 10 * num
+		}
+		fmt.Printf("Bank: %s. Stack %v\n", bank, stack)
 	}
 	fmt.Println(result)
 
