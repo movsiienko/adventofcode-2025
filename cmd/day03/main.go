@@ -38,13 +38,19 @@ func main() {
 				head = batteryInt
 				continue
 			}
-			latest := stack[len(stack)-1]
-			// TODO: Simillar to how we check head we need to check other numbers since the begining depending on how much we have left in the bank
-			if remaning+len(stack) > 12 && batteryInt > latest {
-				fmt.Printf("Switching to latest: %d. Current stack: %v \n", batteryInt, stack)
-				stack[len(stack)-1] = batteryInt
-			} else if remaning+len(stack) > 12 {
-
+			if remaning+len(stack) > 12 {
+				replaced := false
+				for stackIndex, value := range stack {
+					if ((stackIndex + remaning + 1) > 12) && (batteryInt > value) {
+						fmt.Printf("Replaced index %d to value %d. New stack: %v \n", stackIndex, batteryInt, stack)
+						stack = append(stack[:stackIndex], batteryInt)
+						replaced = true
+						break
+					}
+				}
+				if !replaced && len(stack) < 12 {
+					stack = append(stack, batteryInt)
+				}
 			} else if len(stack) < 12 {
 				fmt.Printf("Appending %d. Current stack: %v \n", batteryInt, stack)
 				stack = append(stack, batteryInt)
@@ -52,7 +58,8 @@ func main() {
 		}
 		fmt.Printf("Bank: %s. Stack %v\n", bank, stack)
 		if len(stack) != 12 {
-			panic("Stack len should be 12.")
+			errStr := fmt.Sprintf("Stack len should be 12. Current: %d. Stack: %v", len(stack), stack)
+			panic(errStr)
 		}
 		for i, num := range stack {
 			result += int(math.Pow10(len(stack)-i-1)) * num
