@@ -23,8 +23,7 @@ func main() {
 		for i, battery := range bank {
 			batteryInt, err := runeToInt(battery)
 			if err != nil {
-				fmt.Println("Failed to convert battery")
-				panic(1)
+				panic("Failed to convert battery")
 			}
 			if len(stack) == 0 {
 				stack = append(stack, batteryInt)

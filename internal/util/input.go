@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-// ReadInput reads the input file and returns its contents as a string
 func ReadInput(filename string) (string, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
@@ -14,7 +13,6 @@ func ReadInput(filename string) (string, error) {
 	return string(data), nil
 }
 
-// ReadLines reads the input file and returns its contents as a slice of lines
 func ReadLines(filename string) ([]string, error) {
 	data, err := ReadInput(filename)
 	if err != nil {
