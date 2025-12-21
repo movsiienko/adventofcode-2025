@@ -5,25 +5,19 @@ import (
 	"ovsiienko.xyz/advent-of-code/internal/util"
 )
 
-type postions = struct {
+const (
+	ActiveCell   = '@'
+	InactiveCell = 'x'
+	MinNeigbors  = 4
+)
+
+type positions = struct {
 	startPosition int
 	endPosition   int
 }
 
-func calcualtePositions(index int, limit int) *postions {
-	limit--
-	var startPosition, endPosition int
-	if index == 0 {
-		startPosition = 0
-	} else {
-		startPosition = index - 1
-	}
-	if index == limit {
-		endPosition = index
-	} else {
-		endPosition = index + 1
-	}
-	return &postions{startPosition: startPosition, endPosition: endPosition}
+func calculatePositions(index int, limit int) *positions {
+	return &positions{startPosition: max(0, index-1), endPosition: min(limit-1, index+1)}
 }
 
 func main() {
@@ -35,19 +29,19 @@ func main() {
 	iterationOutput := make([]string, len(lines))
 	copy(iterationOutput, lines)
 	result := 0
-	for true {
+	for {
 		iterationResult := 0
 		for lineNumber, line := range lines {
 			if line == "" {
 				continue
 			}
 			for columnNumber, value := range line {
-				if value != '@' {
+				if value != ActiveCell {
 					continue
 				}
 				adjPosCount := 0
-				xPositions := calcualtePositions(columnNumber, len(line))
-				yPositions := calcualtePositions(lineNumber, len(lines))
+				xPositions := calculatePositions(columnNumber, len(line))
+				yPositions := calculatePositions(lineNumber, len(lines))
 
 				for x := xPositions.startPosition; x <= xPositions.endPosition; x++ {
 					for y := yPositions.startPosition; y <= yPositions.endPosition; y++ {
@@ -55,16 +49,16 @@ func main() {
 							continue
 						}
 						adjValue := lines[y][x]
-						if adjValue == '@' {
+						if adjValue == ActiveCell {
 							adjPosCount++
 						}
 					}
 				}
 
-				if adjPosCount < 4 {
+				if adjPosCount < MinNeigbors {
 					iterationResult++
 					lineRune := []rune(iterationOutput[lineNumber])
-					lineRune[columnNumber] = 'x'
+					lineRune[columnNumber] = InactiveCell
 					iterationOutput[lineNumber] = string(lineRune)
 				}
 			}
